@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { MouseEventHandler } from "react";
 
 import usePreviewModal from "@/hooks/use-preview-modal";
+import useCart from "@/hooks/use-cart";
 
 interface ProductCard {
     data: Product;
@@ -18,6 +19,7 @@ interface ProductCard {
 const ProductCard: React.FC<ProductCard> = ({
     data
 }) => {
+    const cart = useCart();
     const PreviewModal = usePreviewModal()
     const router = useRouter();
 
@@ -29,6 +31,12 @@ const ProductCard: React.FC<ProductCard> = ({
         event.stopPropagation();
 
         PreviewModal.onOpen(data);
+    }
+
+    const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.stopPropagation();
+
+        cart.addItem(data);
     }
 
     return (
@@ -49,7 +57,7 @@ const ProductCard: React.FC<ProductCard> = ({
                 icon={<Expand size={20} className="text-gray-600" />}
                 />
                 <IconButton
-              onClick={() => {}}
+              onClick={onAddToCart}
               icon={<ShoppingCart size={20} className="text-gray-600" />}
             />
                </div>
